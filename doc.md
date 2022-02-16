@@ -322,7 +322,8 @@ cat out2.txt
 
 ![img_35.png](img_35.png)
 
-<a/>3. С помощью окружения PowerShell создайте папки FOLDER1, FOLDER2. В FOLDER1 создайте 4 произвольных текстовых файла. Осуществите копирование этих файлов в FOLDER2 с заменой расширения txt на bak.
+<a/>3. С помощью окружения PowerShell создайте папки FOLDER1, FOLDER2. В FOLDER1 создайте 4 произвольных текстовых
+файла. Осуществите копирование этих файлов в FOLDER2 с заменой расширения txt на bak.
 
 ```powershell
 ni FOLDER1 -itemtype directory
@@ -335,15 +336,16 @@ ni four.txt -itemtype file
 sl ..
 cp -path ".\FOLDER1\*.txt" -destination ".\FOLDER2"
 sl FOLDER2
-ls *.txt | rni -newname { $_.name -replace '.txt','.bak'}
+ls *.txt | rni -newname { $_.name -replace '.txt', '.bak' }
 ls
 ```
 
 ![img_36.png](img_36.png)
 
-<a/> Напишите скрипт PS1, выполняющий все команды в задании 3. Перед выполнением скрипта удалите все предыдущие результаты.
+<a/>4. Напишите скрипт PS1, выполняющий все команды в задании 3. Перед выполнением скрипта удалите все предыдущие результаты.
 
 Скрипт:
+
 ```powershell
 ni FOLDER1 -itemtype directory
 ni FOLDER2 -itemtype directory
@@ -355,12 +357,12 @@ ni four.txt -itemtype file
 sl ..
 cp -path ".\FOLDER1\*.txt" -destination ".\FOLDER2"
 sl FOLDER2
-ls *.txt | rni -newname { $_.name -replace '.txt','.bak'}
+ls *.txt | rni -newname { $_.name -replace '.txt', '.bak' }
 sl ..
 ```
 
-
 Запущенный код:
+
 ```powershell
 Set-ExecutionPolicy Unrestricted
 .\PS1.ps1
@@ -369,4 +371,34 @@ dir FOLDER2
 
 ![img_37.png](img_37.png)
 
-<a/>5. Напишите скрипт, выполняющий команды в задании №2, используя вместо echo командлет Add-Content. Примеры использования смотреть по справке команды. Определите, алиасом какой команды является echo
+<a/>5. Напишите скрипт, выполняющий команды в задании №2, используя вместо echo командлет Add-Content. Примеры
+использования смотреть по справке команды. Определите, алиасом какой команды является echo
+
+![img_38.png](img_38.png)
+
+Скрипт:
+
+```powershell
+wordpad
+Set-Content .\OUT2.txt -Value "SessionID" # Нужно для перезаписи файла
+Add-Content .\OUT2.txt -Value (ps wordpad).SI
+
+ac .\OUT2.txt -Value "Handle"
+ac .\OUT2.txt -Value (ps wordpad).Handle
+
+ac .\OUT2.txt -Value "Modules"
+foreach ($item in (ps wordpad).Modules) # Так как возвращается коллекция
+{
+    ac .\OUT2.txt -Value $item
+}
+cat out2.txt
+(ps wordpad).Kill()
+```
+
+Запущенный код:
+
+```powershell
+.\PS2.ps1
+```
+
+![img_39.png](img_39.png)
